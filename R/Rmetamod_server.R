@@ -12,8 +12,8 @@ utils::globalVariables(c("Temperature"))
 #' @import shiny
 #' @import crustalHeat
 #' @importFrom rlist list.save list.load
-#' @importFrom colourpicker updateColourInput
 #' @importFrom scales seq_gradient_pal
+#' @importFrom shinyWidgets updateColorPickr
 #' @export
 #'
 #' @param input see shiny documentation
@@ -93,8 +93,8 @@ Rmetamod_server <- function(input, output, session) {
 
                  updateSelectInput(inputId="background",selected=loadedParams$background)
                  updateNumericInput(inputId="geo_width",value=loadedParams$geo_width)
-                 colourpicker::updateColourInput(session,inputId="geo_color1",value=loadedParams$geo_color1)
-                 colourpicker::updateColourInput(session,inputId="geo_color2",value=loadedParams$geo_color2)
+                 shinyWidgets::updateColorPickr(session,inputId="geo_color1",value=loadedParams$geo_color1)
+                 shinyWidgets::updateColorPickr(session,inputId="geo_color2",value=loadedParams$geo_color2)
 
                }
                )

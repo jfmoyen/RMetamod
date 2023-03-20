@@ -4,8 +4,7 @@
 #' UI definition
 #'
 #' @importFrom  bslib bs_theme
-#' @importFrom colourpicker colourInput
-#' @importFrom shinyWidgets radioGroupButtons
+#' @importFrom shinyWidgets radioGroupButtons colorPickr
 #' @import shiny
 #' @export
 #'
@@ -287,21 +286,33 @@ Rmetamod_ui <- fluidPage(
              conditionalPanel( condition = "input.plot_geotherm == 1",
                                h4("G\u00E9othermes"),
 
-                               numericInput("geo_width",
-                                            "Largeur des courbes",
-                                            value = 1,
-                                            step=0.2),
+                               fluidRow(
+                                 column(width=4,
+                                        numericInput("geo_width",
+                                              "Largeur des courbes",
+                                              value = 1,
+                                              step=0.2)),
 
-                               colourpicker::colourInput(inputId="geo_color1",
-                                           label="Couleur",
-                                           allowTransparent=T,
-                                           value="red"),
+                                 column(width=4,
+                                        shinyWidgets::colorPickr(inputId="geo_color1",
+                                                          label="Couleur",
+                                                          opacity=T,
+                                                          theme="monolith",
+                                                          preview=F,
+                                                          useAsButton = T,
+                                                          selected ="#FF0000")),
 
-                               conditionalPanel(condition = "input.n_curves > 1 || input.n_timestep > 1",
-                                                colourpicker::colourInput(inputId="geo_color2",
-                                                            label="Couleur max",
-                                                            allowTransparent=T,
-                                                            value="blue")
+                                 column(width=4,
+                                        conditionalPanel(condition = "input.n_curves > 1 || input.n_timestep > 1",
+                                                  shinyWidgets::colorPickr(inputId="geo_color2",
+                                                                           label="Couleur max",
+                                                                           opacity=T,
+                                                                           theme="monolith",
+                                                                           preview=F,
+                                                                           useAsButton = T,
+                                                                           selected ="#0000FF"))
+                               )
+
                                )
              ), #End geotherm conditional panel
 
@@ -309,21 +320,32 @@ Rmetamod_ui <- fluidPage(
              conditionalPanel( condition = "input.plot_path == 1",
                                h4("Trajets P-T"),
 
+                               fluidRow(
+                                 column(width=4,
                                numericInput("path_width",
                                             "Largeur des courbes",
                                             value = 0.6,
-                                            step=0.2),
+                                            step=0.2)),
 
-                               colourpicker::colourInput(inputId="path_color1",
+                               column(width=4,
+                                      shinyWidgets::colorPickr(inputId="path_color1",
                                            label="Couleur",
-                                           allowTransparent=T,
-                                           value="green"),
+                                           opacity=T,
+                                           theme="monolith",
+                                           preview=F,
+                                           useAsButton = T,
+                                           selected ="#00FF00")),
 
-                               conditionalPanel(condition = "input.n_path > 1 ",
-                                                colourpicker::colourInput(inputId="path_color2",
+                               column(width=4,
+                                      conditionalPanel(condition = "input.n_path > 1 ",
+                                                shinyWidgets::colorPickr(inputId="path_color2",
                                                             label="Couleur max",
-                                                            allowTransparent=T,
-                                                            value="darkgreen")
+                                                            opacity=T,
+                                                            theme="monolith",
+                                                            preview=F,
+                                                            useAsButton = T,
+                                                            selected ="#006400"))
+                               )
                                )
              ) #End path conditional panel
 

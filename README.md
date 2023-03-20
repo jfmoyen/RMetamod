@@ -6,7 +6,12 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of RMetamod is to …
+*RMetamod* est une ré-invention moderne de l’application
+[Metamod](http://christian.nicollet.free.fr/page/Metamod/metamod.html),
+développée par C. Nicollet sous Windows. Bien que le “Metamod” d’origine
+semble encore fonctionner sous Windows 10, ce projet vise à proposer une
+implémentation moderne, mutli-plate forme et plus interactive (?) que la
+version d’origine.
 
 ## Installation
 

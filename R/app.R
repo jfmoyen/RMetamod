@@ -1,9 +1,8 @@
 #' Run the app
 #' @import shiny
 #' @export
-#'
-#'
-MyApp <- function(){
+MetamodApp <- function(){
   shinyApp(Rmetamod_ui, Rmetamod_server)
-  }
-MyApp()
+}
+
+MetamodApp()
