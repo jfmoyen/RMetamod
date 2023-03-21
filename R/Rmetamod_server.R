@@ -115,8 +115,6 @@ Rmetamod_server <- function(input, output, session) {
 
   )
 
-  #### Dynamic UI elements ####
-  #Will disappear, I think
 
   #### Update range of parameters to explore ####
 
@@ -128,20 +126,14 @@ observeEvent(input$geoth_param,
                updateNumericInput(inputId = "geoth_param_to",value=input[[input$geoth_param]]*1.5)
                })
 
-  ### THIS SHOULD BE UPDATED TO STATIC UI
-  # output$path_param_from_UI <- renderUI({
-  #   numericInput("path_param_from",
-  #                "Valeur minimale:",
-  #                value = input[[input$path_param]],
-  #                width="40%")
-  # })
-  #
-  # output$path_param_to_UI <- renderUI({
-  #   numericInput("path_param_to",
-  #                "Valeur maximale:",
-  #                value = input[[input$path_param]]*1.5,
-  #                width="40%")
-  # })
+  observeEvent(input$path_param,
+               {
+                 # Careful here, as the bundle depends both on geoth_param and its values
+                 # don't forget to isolate...
+                 updateNumericInput(inputId = "path_param_from",value=input[[input$path_param]])
+                 updateNumericInput(inputId = "path_param_to",value=input[[input$path_param]]*1.5)
+               })
+
 
   output$z0_slider <- renderUI({
     sliderInput("z0",
@@ -405,6 +397,19 @@ observeEvent(input$geoth_param,
           "km ",
           round(as.numeric(input$plot_hover$x),0),
           "\u00B0C</b>")
+  })
+
+  ### Info - T moho etc ####
+  output$tmoho <- renderText({
+
+    paste("Temp. moho :",input$dTdz * input$z_moho,"\u00B0C")
+
+  })
+
+  output$totalz <- renderText({
+
+    paste("Dep. vertical total :", input$u * UItoSI["u"] * input$t_max * UItoSI["time"] * UItoSI["z_moho"] , "km")
+
   })
 
 } # end of server()

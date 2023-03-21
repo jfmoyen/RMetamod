@@ -172,7 +172,7 @@ Rmetamod_ui <- fluidPage(
         conditionalPanel(
           condition = "input.mode_calc == 'time' ",
 
-          h3("Evolution dans le temps"),
+          h3("Evolution dans le temps - trajets PT"),
 
           fluidRow(
             column(
@@ -194,19 +194,23 @@ Rmetamod_ui <- fluidPage(
                 value = 1,
                 width = "60%"
               ))
-            ),
-
-            column(width=4,
-                   checkboxInput("plot_geotherm",
-                                 label = "Tracer les g\u00E9othermes",
-                                 value = T),
-
-                   checkboxInput("plot_path",
-                                 label = "Tracer les trajets P-T",
-                                 value = F)
             )
-
           ),
+
+          fluidRow(
+            column(width=8,
+                   sliderInput(
+                     "dTdz",
+                     "G\u00E9otherme initial [\u00B0C.km-1]",
+                     min = 0,
+                     max = 50,
+                     step = 1,
+                     value = 20
+                   )),
+            column(width=4,
+                   textOutput("tmoho") )
+          ),
+
 
           fluidRow(
             column(width=8,
@@ -218,31 +222,65 @@ Rmetamod_ui <- fluidPage(
                      step = 0.1,
                      value = 0
                    )
-            )
-
-
+            ),
+            column(width=4,
+                   textOutput("totalz") )
           ),
 
+          fluidRow(
+            column(width=4,
+                   checkboxInput("plot_geotherm",
+                          label = "Tracer les géothermes",
+                          value = T)),
+            column(width=4,
+            conditionalPanel(condition = "input.plot_geotherm == 1",
+                             tags$div(id = "inline",numericInput(
+                               inputId = "time_step",
+                               label = "Tout les ... Ma",
+                               min = 0,
+                               value = 10,
+                               width = "40%"
+                             ))
 
-          conditionalPanel(
-            condition = "input.plot_path == 1",
-            fluidRow(
-              column(width=8,
-                     uiOutput("z0_slider")
-              ),
-              column(width=4,
-                     tags$div(id = "inline",numericInput(
-                       inputId = "n_path",
-                       label = "Nombre de trajets PT",
-                       min = 1,
-                       value = 1,
-                       width = "40%"
-                     ) )
-              )
 
+          )
+          )
+          ),
+
+          fluidRow(
+            column(width=8,
+                   sliderInput(
+                     "z0",
+                     "Profondeur initiale [km]",
+                     min = -10,
+                     max = 10,
+                     step = 0.1,
+                     value = 0
+                   )
+            )
             ),
 
-            conditionalPanel(condition = "input.n_path > 1",
+          fluidRow(
+            column(width=4,
+                   checkboxInput("plot_path",
+                                 label = "Tracer les trajets",
+                                 value = T)),
+            column(width=4,
+                   conditionalPanel(condition = "input.plot_path == 1",
+                                    tags$div(id = "inline",numericInput(
+                                      inputId = "n_path",
+                                      label = "Nombre de trajets PT",
+                                      min = 1,
+                                      value = 1,
+                                      width = "40%"
+                                    ))
+
+
+                   )
+            )
+
+          ),
+                  conditionalPanel(condition = "input.n_path > 1 && input.plot_path ==1",
                              fluidRow(column(
                                width = 4,
                                selectInput(
@@ -258,11 +296,23 @@ Rmetamod_ui <- fluidPage(
                                  )
                                )
                              ),
-                             column(width = 4, tags$div(id = "inline",uiOutput("path_param_from_UI"))),
-                             column(width =
-                                      4, tags$div(id = "inline",uiOutput("path_param_to_UI")))
+                             column(width = 4, tags$div(id = "inline",
+                                                        numericInput("path_param_from",
+                                                                     "Valeur minimale:",
+                                                                     value = 30,
+                                                                     width="40%"))
+                             ),
+
+                             column(width = 4, tags$div(id = "inline",
+                                                        numericInput("path_param_to",
+                                                                     "Valeur maximale:",
+                                                                     value = 45,
+                                                                     width="40%"))
+                             ),
+
+
                              ))
-          )
+
 
         ) ###END MODE PATH
       )),
